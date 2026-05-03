@@ -1,0 +1,237 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   全局基调 & 纹理
+   ============================================ */
+:root {
+  --gold: #c9a96e;
+  --gold-dim: #8b7530;
+  --ink: #0d0b08;
+  --card-bg: rgba(18, 16, 14, 0.8);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #1a1a1a transparent;
+}
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #1a1a1a; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #2a2a2a; }
+
+body {
+  font-family: 'Noto Sans SC', 'Source Han Sans CN', system-ui, sans-serif;
+  background: #060504;
+  color: #e8e8e8;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* 宣纸纤维纹理 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image:
+    repeating-linear-gradient(
+      0deg, transparent, transparent 1px,
+      rgba(180,160,120,0.008) 1px, rgba(180,160,120,0.008) 2px
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 1px,
+      rgba(180,160,120,0.006) 1px, rgba(180,160,120,0.006) 2px
+    );
+}
+
+#app { position: relative; z-index: 1; }
+
+/* ============================================
+   SVG 噪点纹理（全局叠加）
+   ============================================ */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ============================================
+   烟雾升腾背景
+   ============================================ */
+@keyframes smoke1 {
+  0%   { opacity: 0; transform: translateY(0) translateX(0) scale(1); }
+  40%  { opacity: 0.035; }
+  80%  { opacity: 0.015; }
+  100% { opacity: 0; transform: translateY(-80px) translateX(30px) scale(1.5); }
+}
+@keyframes smoke2 {
+  0%   { opacity: 0; transform: translateY(0) translateX(0) scale(0.9); }
+  50%  { opacity: 0.025; transform: translateY(-60px) translateX(-35px) scale(1.4); }
+  100% { opacity: 0; transform: translateY(-120px) translateX(-20px) scale(1.8); }
+}
+@keyframes smoke3 {
+  0%   { opacity: 0; transform: translateY(0) translateX(0) scale(1.1); }
+  30%  { opacity: 0.02; }
+  70%  { opacity: 0.01; }
+  100% { opacity: 0; transform: translateY(-100px) translateX(15px) scale(1.6); }
+}
+
+/* ============================================
+   金粉粒子飘浮
+   ============================================ */
+@keyframes goldDrift1 {
+  0%   { transform: translate(0, 0) scale(0); opacity: 0; }
+  10%  { opacity: 0.7; }
+  90%  { opacity: 0.1; }
+  100% { transform: translate(40px, -200px) scale(1); opacity: 0; }
+}
+@keyframes goldDrift2 {
+  0%   { transform: translate(0, 0) scale(0); opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.1; }
+  100% { transform: translate(-30px, -180px) scale(0.8); opacity: 0; }
+}
+@keyframes goldDrift3 {
+  0%   { transform: translate(0, 0) scale(0); opacity: 0; }
+  15%  { opacity: 0.5; }
+  85%  { opacity: 0.1; }
+  100% { transform: translate(60px, -250px) scale(0.6); opacity: 0; }
+}
+
+/* ============================================
+   烛光按钮
+   ============================================ */
+@keyframes candleFlicker {
+  0%, 100% { box-shadow: 0 0 6px rgba(201,169,110,0.3), 0 0 14px rgba(201,169,110,0.08); }
+  30%      { box-shadow: 0 0 9px rgba(201,169,110,0.4), 0 0 20px rgba(201,169,110,0.12); }
+  60%      { box-shadow: 0 0 5px rgba(201,169,110,0.25), 0 0 10px rgba(201,169,110,0.06); }
+  85%      { box-shadow: 0 0 10px rgba(201,169,110,0.45), 0 0 22px rgba(201,169,110,0.15); }
+}
+
+/* ============================================
+   印章落款
+   ============================================ */
+@keyframes stampDown {
+  0%   { transform: scale(2.8) translateY(-50px); opacity: 0; filter: blur(6px); }
+  55%  { transform: scale(0.92) translateY(3px); opacity: 0.85; filter: blur(0); }
+  70%  { transform: scale(1.06) translateY(-2px); opacity: 1; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+/* ============================================
+   文字逐字浮现
+   ============================================ */
+@keyframes inkReveal {
+  0%   { clip-path: inset(0 100% 0 0); opacity: 0; filter: blur(3px); }
+  100% { clip-path: inset(0 0 0 0); opacity: 1; filter: blur(0); }
+}
+
+/* ============================================
+   卷轴展开
+   ============================================ */
+@keyframes scrollUnfurl {
+  0%   { max-height: 0; opacity: 0; transform: translateY(-8px); }
+  100% { max-height: 3000px; opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   通用组件样式
+   ============================================ */
+@layer components {
+  /* 玻璃拟态卡片 */
+  .glass-card {
+    background: rgba(18, 16, 14, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 1rem;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .glass-card:hover {
+    background: rgba(22, 20, 16, 0.85);
+    border-color: rgba(201, 169, 110, 0.18);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(201, 169, 110, 0.06),
+                0 0 60px rgba(201, 169, 110, 0.04);
+  }
+
+  /* 原始卡片（用于 ItemCard 等需要深色背景的场景） */
+  .ink-card {
+    background: rgba(18, 16, 14, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 1rem;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+  .ink-card:hover {
+    background: rgba(22, 20, 16, 0.9);
+    border-color: rgba(201, 169, 110, 0.15);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4), 0 0 60px rgba(201, 169, 110, 0.03);
+    transform: translateY(-2px);
+  }
+
+  /* 金色边框微光卡片 */
+  .gold-card {
+    background: rgba(18, 16, 14, 0.8);
+    border: 1px solid rgba(201, 169, 110, 0.1);
+    border-radius: 1rem;
+    transition: all 0.5s ease;
+  }
+  .gold-card:hover {
+    border-color: rgba(201, 169, 110, 0.3);
+    box-shadow: 0 0 30px rgba(201, 169, 110, 0.06),
+                inset 0 0 30px rgba(201, 169, 110, 0.02);
+  }
+
+  /* 烛光按钮 */
+  .btn-candle {
+    animation: candleFlicker 2.5s ease-in-out infinite;
+    transition: all 0.4s ease;
+  }
+  .btn-candle:hover {
+    animation: candleFlicker 1.2s ease-in-out infinite;
+  }
+  .btn-candle:active {
+    transform: scale(0.96);
+  }
+
+  /* 悬浮提示卡片 */
+  .floating-tip {
+    background: rgba(20, 18, 14, 0.96);
+    border: 1px solid rgba(201, 169, 110, 0.2);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6),
+                0 0 2px rgba(201, 169, 110, 0.15);
+    backdrop-filter: blur(16px);
+    border-radius: 1rem;
+  }
+
+  /* 导航当前指示器 */
+  .nav-indicator {
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    animation: candleFlicker 2s ease-in-out infinite;
+  }
+}
+
+/* ============================================
+   prefers-reduced-motion
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

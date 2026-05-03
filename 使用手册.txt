@@ -1,0 +1,5 @@
+// 现在这个目录执行 npm run dev 运行前端，再启动后端
+cd f:\xuanjian-outline\frontend
+npm run dev
+
+redis一定要启动
