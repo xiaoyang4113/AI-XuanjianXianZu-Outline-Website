@@ -5,12 +5,12 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/xuanjian?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
     username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:197412xukang}
+    password: ${DB_PASSWORD:test}
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
     host: ${REDIS_HOST:localhost}
     port: 6379
-    password: ${REDIS_PASSWORD:197412}
+    password: ${REDIS_PASSWORD:test}
     database: 5
     timeout: 3000ms
   jackson:
@@ -42,5 +42,5 @@ file:
 
 ai:
   deepseek:
-    api-key: sk-40de4e2d52ac49bab11dbd7a874f0667
+    api-key: sk-test
     api-url: https://api.deepseek.com/chat/completions
